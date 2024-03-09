@@ -1,0 +1,21 @@
+version: '3'
+services:
+  mongo:
+    image: mongo:7.0
+    container_name: mongodb
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 5000:5000
+    restart: always
+    depends_on: 
+      - mongo
+    volumes:
+      - .:/app
