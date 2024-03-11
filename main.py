@@ -5,19 +5,18 @@ from mongoengine import *
 
 app = Flask(__name__)
 
-app.config['MONGO_SETTINGS'] = {
+app.config['MONGODB_SETTINGS'] = {
     'db' : 'users',
     'host' : 'mongodb',
     'port' : 27017,
-    'user' : 'admin',
+    'username' : 'admin',
     'password' : 'admin'
 }
-
-
-api = Api(app)
 db = MongoEngine(app)
+api = Api(app)
 
-class User_Model(db.Document):
+
+class UserModel(Document):
     cpf = StringField(required=True, unique=True, max_lenght=50)
     first_name = StringField(required=True)
     last_name = StringField(required=True)
@@ -28,7 +27,7 @@ class User_Model(db.Document):
 
 class User(Resource):
     def get(self):
-        return jsonify(User_Model._object_key) #corrigir
+        return jsonify(UserModel.objects())
     
 api.add_resource(User, "/user")
 
