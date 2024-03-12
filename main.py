@@ -6,15 +6,14 @@ from mongoengine import *
 app = Flask(__name__)
 
 app.config['MONGODB_SETTINGS'] = {
-    'db' : 'users',
-    'host' : 'mongodb',
-    'port' : 27017,
-    'username' : 'admin',
-    'password' : 'admin'
+    'db': 'users',
+    'host': 'mongodb',
+    'port': 27017,
+    'username': 'admin',
+    'password': 'admin'
 }
 db = MongoEngine(app)
 api = Api(app)
-
 
 class UserModel(Document):
     cpf = StringField(required=True, unique=True, max_lenght=50)
@@ -22,13 +21,14 @@ class UserModel(Document):
     last_name = StringField(required=True)
     email = EmailField(required=True)
     birth_date = DateTimeField(required=True)
-    
 
 
 class User(Resource):
     def get(self):
-        return jsonify(UserModel.objects())
+        return {"message":"user 1"} #jsonify(UserModel.objects())
     
+
+
 api.add_resource(User, "/user")
 
 if __name__ == "__main__":
