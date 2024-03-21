@@ -1,5 +1,5 @@
 from flask import Flask, jsonify
-from flask_restful import Resource, Api
+from flask_restful import Resource, Api, reqparse
 from flask_mongoengine import MongoEngine
 from mongoengine import *
 
@@ -12,6 +12,15 @@ app.config['MONGODB_SETTINGS'] = {
     'username': 'admin',
     'password': 'admin'
 }
+
+_user_parser = reqparse.RequestParser()
+_user_parser.add_argument('first_name', type=str, required=True, help="This field cannot be blank")
+_user_parser.add_argument('last_name', type=str, required=True, help="This field cannot be blank")
+_user_parser.add_argument('cpf', type=str, required=True, help="This field cannot be blank")
+_user_parser.add_argument('email', type=str, required=True, help="This field cannot be blank")
+_user_parser.add_argument('birthday_date', type=str, required=True, help="This field cannot be blank")
+
+
 db = MongoEngine(app)
 api = Api(app)
 
@@ -20,12 +29,17 @@ class UserModel(Document):
     first_name = StringField(required=True)
     last_name = StringField(required=True)
     email = EmailField(required=True)
-    birth_date = DateTimeField(required=True)
+    birthday_date = DateTimeField(required=True)
 
 
 class User(Resource):
-    def get(self):
-        return {"message":"user 1"} #jsonify(UserModel.objects())
+    def get(self, cpf):
+        return {"CPF":cpf} #jsonify(UserModel.objects())
+    
+    def post(self):
+        data = _user_parser.parse_args()
+        UserModel(**data).delete()
+        
     
 
 
