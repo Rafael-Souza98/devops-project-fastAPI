@@ -9,6 +9,6 @@ def create_app(config):
     app.config.from_object(config)
     init_db(app)
     
-    api.add_resource(Users, "/users")
+    api.add_resource(Users, "/user")
     api.add_resource(User, "/user", "/user/<string:cpf>")
     return app
