@@ -7,7 +7,7 @@ compose:
 	@docker-compose build
 	@docker-compose up
 
-att-pip:
+att-req:
 	@pip3 freeze > requirements.txt
 
 test:

@@ -1,7 +1,7 @@
 aniso8601==9.0.1
 blinker==1.7.0
 click==8.1.7
-dnspython==2.6.1
+dnspython==2.0.0
 email_validator==2.1.1
 flake8==7.0.0
 Flask==3.0.2
@@ -20,7 +20,7 @@ packaging==24.0
 pluggy==1.4.0
 pycodestyle==2.11.1
 pyflakes==3.2.0
-pymongo==4.6.2
+pymongo==3.11.0
 pytest==8.1.1
 pytz==2024.1
 sentinels==1.0.0
