@@ -1,12 +1,12 @@
 import os
 import mongomock
 
-class DevConfig():
+class DevConfig():  
     MONGODB_SETTINGS = {
         'db': os.getenv('MONGODB_DB'),
         'host': os.getenv('MONGODB_HOST'),
         'username': os.getenv('MONGODB_USER'),
-        'password': os.getenv('MONGODB_PASSWORD')
+        'password': os.getenv('MONGODB_PASSWORD'),
     }
 
 class ProdConfig():
@@ -20,9 +20,6 @@ class ProdConfig():
         'host': "mongodb+srv://%s:%s@%s/" % (
             MONGODB_USER, MONGODB_PASSWORD, MONGODB_HOST
         )
-            
-        
-        
     }
 
 class MockConfig():

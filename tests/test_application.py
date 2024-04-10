@@ -2,13 +2,10 @@
 import pytest
 from application import create_app
 import datetime
-import pytz
 
 
 class TestApplication():
-
     
-
     @pytest.fixture
     def client(self):
         app  = create_app('config.MockConfig')
