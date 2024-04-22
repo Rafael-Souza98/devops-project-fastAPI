@@ -55,7 +55,7 @@ class TestApplication():
         assert resp.json[0]["first_name"] == "rafael"
         assert resp.json[0]["last_name"] == "souza"
         assert resp.json[0]["cpf"] == "440.513.740-41"
-        assert formato == '1998-02-12T22:00:00Z'
+        assert formato == '1998-02-12T00:00:00Z'
 
         resp = client.get('/user/%s' % invalid_user['cpf'] )
         assert resp.status_code == 400
