@@ -19,7 +19,7 @@ class TestApplication():
                 "last_name": "souza",
                 "cpf": "440.513.740-41",
                 "email": "faelsos98@gmail.com",
-                "birthday_date": "1998-02-11"
+                "birthday_date": "1998-02-12"
                 }
     @pytest.fixture
     def invalid_user(self):
@@ -28,7 +28,7 @@ class TestApplication():
                 "last_name": "souza",
                 "cpf": "440.513.740-21",
                 "email": "faelsos98@gmail.com",
-                "birthday_date": "1998-02-11"
+                "birthday_date": "1998-02-12"
                 }
 
     def test_get_users(self, client):
@@ -55,7 +55,7 @@ class TestApplication():
         assert resp.json[0]["first_name"] == "rafael"
         assert resp.json[0]["last_name"] == "souza"
         assert resp.json[0]["cpf"] == "440.513.740-41"
-        assert formato == '1998-02-10T22:00:00Z'
+        assert formato == '1998-02-11T22:00:00Z'
 
         resp = client.get('/user/%s' % invalid_user['cpf'] )
         assert resp.status_code == 400
