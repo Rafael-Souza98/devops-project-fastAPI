@@ -16,9 +16,9 @@ class ProdConfig():
     MONGODB_DB = os.getenv('MONGODB_DB')
 
     MONGODB_SETTINGS = {
-        # 'db' : 'users',
-        'host': "mongodb://%s:%s@%s/%s?retryWrites=true&w=majority&appName=db-app-python" % (
-            MONGODB_USER, MONGODB_PASSWORD, MONGODB_HOST, MONGODB_DB
+        'db' : 'users',
+        'host': "mongodb://%s:%s@%s/" % (
+            MONGODB_USER, MONGODB_PASSWORD, MONGODB_HOST
         )
     }
 
