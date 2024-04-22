@@ -1,10 +1,10 @@
 aniso8601==9.0.1
 blinker==1.7.0
 click==8.1.7
-dnspython==2.0.0
+dnspython==1.16.0
 email_validator==2.1.1
 flake8==7.0.0
-Flask==3.0.2
+Flask @ git+https://github.com/pallets/flask.git@2c7f57ad5bd19743312eb34ea5fb838a1349474e
 flask-mongoengine @ git+https://github.com/idoshr/flask-mongoengine.git@e244408acf440c4208f7ddcd6e5d819cb472e4da
 Flask-RESTful==0.3.10
 Flask-WTF==1.2.1
@@ -24,7 +24,7 @@ pymongo==3.11.0
 pytest==8.1.1
 pytz==2024.1
 sentinels==1.0.0
-setuptools==69.2.0
+setuptools==69.5.1
 six==1.16.0
 Werkzeug==3.0.1
 WTForms==3.1.2

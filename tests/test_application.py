@@ -1,17 +1,15 @@
 
 import pytest
 from application import create_app
+from config import MockConfig
 import datetime
-import pytz
+
 
 
 class TestApplication():
-
-    
-
     @pytest.fixture
     def client(self):
-        app  = create_app('config.MockConfig')
+        app  = create_app(MockConfig)
         return app.test_client()
 
     @pytest.fixture
@@ -34,7 +32,7 @@ class TestApplication():
                 }
 
     def test_get_users(self, client):
-        resp = client.get('/user')
+        resp = client.get('/users')
         assert resp.status_code == 200
     
     def test_post_user(self, client, valid_user, invalid_user):
@@ -48,22 +46,17 @@ class TestApplication():
     
     def test_get_user_by_cpf(self, client, valid_user, invalid_user):
         resp = client.get('/user/%s' % valid_user['cpf'] )
+        timestap_seconds = resp.json[0]["birthday_date"]["$date"]
 
-        timestamp_ms = resp.json[0]["birthday_date"]["$date"]
-        # Convertendo o timestamp para um objeto datetime usando o fuso horário da região us-west-2
+        date_time = datetime.datetime.fromtimestamp(timestap_seconds / 1000)
+        formato = date_time.strftime("%Y-%m-%dT%H:%M:%SZ")
         
-        birthday_date = datetime.datetime.fromtimestamp(timestamp_ms / 1000.0)
-        # Formatando a data como uma string no formato desejado
-        formatted_birthday_date = birthday_date.strftime('%Y-%m-%dT%H:%M:%SZ')
-
-
         assert resp.status_code == 200
         assert resp.json[0]["first_name"] == "rafael"
         assert resp.json[0]["last_name"] == "souza"
         assert resp.json[0]["cpf"] == "440.513.740-41"
-        assert formatted_birthday_date == '1998-02-10T22:00:00Z'
+        assert formato == '1998-02-10T22:00:00Z'
 
         resp = client.get('/user/%s' % invalid_user['cpf'] )
         assert resp.status_code == 400
         assert b"User doesn't exist" in resp.data
-        

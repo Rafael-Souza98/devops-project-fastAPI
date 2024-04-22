@@ -20,8 +20,9 @@ services:
       - MONGODB_HOST=mongodb
       - MONGODB_USER=admin
       - MONGODB_PASSWORD=admin
+
     restart: always
     depends_on: 
       - mongo
     volumes:
-      - ./application:/app/application
+      - ./application:/app/aplication

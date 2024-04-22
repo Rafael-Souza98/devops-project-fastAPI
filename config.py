@@ -1,7 +1,7 @@
 import os
 import mongomock
-
 class DevConfig():
+
     MONGODB_SETTINGS = {
         'db': os.getenv('MONGODB_DB'),
         'host': os.getenv('MONGODB_HOST'),
@@ -16,13 +16,10 @@ class ProdConfig():
     MONGODB_DB = os.getenv('MONGODB_DB')
 
     MONGODB_SETTINGS = {
-        'db' : 'users',
-        'host': "mongodb+srv://%s:%s@%s/" % (
-            MONGODB_USER, MONGODB_PASSWORD, MONGODB_HOST
+        # 'db' : 'users',
+        'host': "mongodb://%s:%s@%s/%s?retryWrites=true&w=majority&appName=db-app-python" % (
+            MONGODB_USER, MONGODB_PASSWORD, MONGODB_HOST, MONGODB_DB
         )
-            
-        
-        
     }
 
 class MockConfig():
@@ -32,3 +29,4 @@ class MockConfig():
         'mongo_client_class' : mongomock.MongoClient
     }
 
+# db-app-python.lcmitgm.mongodb.net
