@@ -48,14 +48,14 @@ class TestApplication():
         resp = client.get('/user/%s' % valid_user['cpf'] )
         timestap_seconds = resp.json[0]["birthday_date"]["$date"]
 
-        date_time = datetime.datetime.fromtimestamp(timestap_seconds / 1000)
+        date_time = datetime.datetime.fromtimestamp(timestap_seconds / 1000, datetime.UTC)
         formato = date_time.strftime("%Y-%m-%dT%H:%M:%SZ")
         
         assert resp.status_code == 200
         assert resp.json[0]["first_name"] == "rafael"
         assert resp.json[0]["last_name"] == "souza"
         assert resp.json[0]["cpf"] == "440.513.740-41"
-        assert formato == '1998-02-11T22:00:00Z'
+        assert formato == '1998-02-12T22:00:00Z'
 
         resp = client.get('/user/%s' % invalid_user['cpf'] )
         assert resp.status_code == 400
