@@ -13,7 +13,7 @@ class ProdConfig():
     MONGODB_USER = os.getenv('MONGODB_USER')
     MONGODB_PASSWORD = os.getenv('MONGODB_PASSWORD')
     MONGODB_HOST = os.getenv('MONGODB_HOST')
-    # MONGODB_DB = os.getenv('MONGODB_DB')
+    MONGODB_DB = os.getenv('MONGODB_DB')
 
     MONGODB_SETTINGS = {
         'db' : 'users',
@@ -29,4 +29,3 @@ class MockConfig():
         'mongo_client_class' : mongomock.MongoClient
     }
 
-# db-app-python.lcmitgm.mongodb.net
