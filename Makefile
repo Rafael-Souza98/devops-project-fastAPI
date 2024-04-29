@@ -4,8 +4,8 @@ test:
 	@pytest -v --disable-warnings
 
 compose:
-	@docker-compose build
-	@docker-compose up
+	@docker compose build --no-cache
+	@docker compose up
 
 att-req:
 	@pip3 freeze > requirements.txt

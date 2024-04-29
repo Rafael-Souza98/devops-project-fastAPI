@@ -25,4 +25,4 @@ services:
     depends_on: 
       - mongo
     volumes:
-      - ./application:/app/aplication
+      - ./application:/app/application
