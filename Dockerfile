@@ -6,7 +6,7 @@ WORKDIR /app
 
 RUN apk add git 
 
-COPY requirements.txt .
+ADD requirements.txt .
 
 RUN pip3 install -r requirements.txt
 
