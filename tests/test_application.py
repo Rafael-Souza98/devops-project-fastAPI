@@ -1,4 +1,5 @@
 
+from flask.testing import FlaskClient
 import pytest
 from application import create_app
 from config import MockConfig
@@ -31,11 +32,11 @@ class TestApplication():
                 "birthday_date": "1998-02-12"
                 }
 
-    def test_get_users(self, client):
+    def test_get_users(self, client: FlaskClient):
         resp = client.get('/users')
         assert resp.status_code == 200
     
-    def test_post_user(self, client, valid_user, invalid_user):
+    def test_post_user(self, client: FlaskClient, valid_user: dict[str, str], invalid_user: dict[str, str]):
         resp = client.post('/user', json=valid_user)
         assert resp.status_code == 200
         assert b"successfully" in resp.data
@@ -44,7 +45,7 @@ class TestApplication():
         assert resp.status_code == 400
         assert b"invalid" in resp.data
     
-    def test_get_user_by_cpf(self, client, valid_user, invalid_user):
+    def test_get_user_by_cpf(self, client: FlaskClient, valid_user: dict[str, str], invalid_user: dict[str, str]):
         resp = client.get('/user/%s' % valid_user['cpf'] )
         timestap_seconds = resp.json[0]["birthday_date"]["$date"]
 
@@ -61,7 +62,7 @@ class TestApplication():
         assert resp.status_code == 400
         assert b"User doesn't exist" in resp.data
     
-    def test_patch_user(self, client, valid_user):
+    def test_patch_user(self, client: FlaskClient, valid_user: dict[str, str]):
         valid_user["first_name"] = "RAFAEL"
         resp = client.patch('/user', json=valid_user)
         assert resp.status_code == 200
@@ -69,5 +70,14 @@ class TestApplication():
 
         valid_user["cpf"] = "160.978.480-48"
         resp = client.patch('/user', json=valid_user)
+        assert resp.status_code == 400
+        assert b"User doesn't exist" in resp.data
+    
+    def test_delete_user(self, client: FlaskClient, valid_user: dict[str, str]):
+        resp = client.delete('/user/%s' % valid_user['cpf'] )
+        assert resp.status_code == 200
+        assert b"deleted" in resp.data
+
+        resp = client.delete('/user/%s' % valid_user['cpf'] )
         assert resp.status_code == 400
         assert b"User doesn't exist" in resp.data

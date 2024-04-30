@@ -82,4 +82,13 @@ class User(Resource):
             response.update(**data)
             return {"message": "User updated"}, 200
         else:
-            return {"message": "User doesn't exist"}, 400 
+            return {"message": "User doesn't exist"}, 400
+        
+    def delete(self, cpf):
+            resp = UserModel.objects(cpf=cpf)
+
+            if resp:
+                resp.delete()
+                return {"message": "User deleted!"}, 200
+            else:
+                return {"message": "User doesn't exist"}, 400
