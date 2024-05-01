@@ -7,3 +7,6 @@ class UserModel(db.Document):
     last_name = db.StringField(required=True)
     email = db.EmailField(required=True)
     birthday_date = db.DateTimeField(required=True)
+
+class HealthCheckModel(db.Document):
+    status = db.StringField()
