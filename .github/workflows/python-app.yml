@@ -21,8 +21,14 @@ jobs:
 
       - name: Install dependencies
         run: |
+          echo "Installing requirements..."
           pip install -r requirements.txt
           pip install pytest mongomock
+
+      - name: Install and run Black
+        run: |
+            pip install black
+            black .
           
       - name: Run tests
         run: make test
@@ -38,5 +44,6 @@ jobs:
           env:
             DEPLOY_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
           run: |
+            echo "Deploy URL: $DEPLOY_URL"
             curl "$DEPLOY_URL"
 
