@@ -56,9 +56,6 @@ jobs:
           type=ref,event=branch
           type=sha
 
-    - name: Convert repository name to lowercase
-      id: lowercase
-      run: echo "REPO_NAME=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
 
     - name: Build Docker image
       id: docker_build
@@ -68,7 +65,7 @@ jobs:
         file: ./Dockerfile
         push: false  # Não empurra a imagem para o DockerHub
         load: true
-        tags: ${{ env.REPO_NAME }}:${{ steps.meta.outputs.sha }}
+        tags: ${{ steps.meta.outputs.sha }}:latest
 
     - name: Run Trivy vulnerability scanner
       uses: aquasecurity/trivy-action@master
