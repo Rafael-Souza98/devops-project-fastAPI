@@ -1,6 +1,3 @@
-# This workflow will install Python dependencies, run tests and lint with a single version of Python
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
-
 name: Deploy Render
 
 on:
@@ -15,7 +12,6 @@ permissions:
 
 env:
   DOCKER_IMAGE_NAME: ${{ github.repository }}
-  
 
 jobs:
   test:
@@ -34,8 +30,8 @@ jobs:
 
       - name: Install and run Black
         run: |
-            pip install black
-            black .
+          pip install black
+          black .
 
       - name: Run tests
         run: make test
@@ -50,9 +46,6 @@ jobs:
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v1
-      
-    - name: Build image
-      run: docker build . --file Dockerfile --tag $DOCKER_IMAGE_NAME:latest
 
     - name: Extract metadata for Docker
       id: meta
@@ -63,6 +56,10 @@ jobs:
           type=ref,event=branch
           type=sha
 
+    - name: Convert repository name to lowercase
+      id: lowercase
+      run: echo "REPO_NAME=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+
     - name: Build Docker image
       id: docker_build
       uses: docker/build-push-action@v4
@@ -70,12 +67,12 @@ jobs:
         context: .
         file: ./Dockerfile
         push: false  # Não empurra a imagem para o DockerHub
-        tags: my-image:${{ steps.meta.outputs.sha }}
+        tags: ${{ env.REPO_NAME }}:${{ steps.meta.outputs.sha }}
 
     - name: Run Trivy vulnerability scanner
       uses: aquasecurity/trivy-action@master
       with:
-        image-ref: ${{ github.repository }}:${{ steps.meta.outputs.sha }}
+        image-ref: ${{ env.REPO_NAME }}:${{ steps.meta.outputs.sha }}
         format: 'sarif'
         output: 'trivy-results.sarif'
 
@@ -85,16 +82,15 @@ jobs:
         sarif_file: 'trivy-results.sarif'
 
   deploy:
-      needs: test
-      runs-on: ubuntu-latest
-      environment:
-        name: production
-      steps:
-        - name: Deploy to Render
-          if: github.ref == 'refs/heads/main'
-          env:
-            DEPLOY_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
-          run: |
-            echo "Deploy URL: $DEPLOY_URL"
-            curl "$DEPLOY_URL"
-
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+    steps:
+      - name: Deploy to Render
+        if: github.ref == 'refs/heads/main'
+        env:
+          DEPLOY_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+        run: |
+          echo "Deploy URL: $DEPLOY_URL"
+          curl "$DEPLOY_URL"
