@@ -37,6 +37,7 @@ jobs:
         run: make test
 
   build:
+    needs: test
     runs-on: ubuntu-latest
 
     steps:
@@ -50,7 +51,7 @@ jobs:
       id: meta
       uses: docker/metadata-action@v3
       with:
-        images: my-image
+        images: ${{ github.repository }}
         tags: |
           type=ref,event=branch
           type=sha
@@ -66,7 +67,7 @@ jobs:
     - name: Run Trivy vulnerability scanner
       uses: aquasecurity/trivy-action@master
       with:
-        image-ref: my-image:${{ steps.meta.outputs.sha }}
+        image-ref: ${{ github.repository }}:${{ steps.meta.outputs.sha }}
         format: 'sarif'
         output: 'trivy-results.sarif'
 
