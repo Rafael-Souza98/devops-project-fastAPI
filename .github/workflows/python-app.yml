@@ -13,6 +13,10 @@ permissions:
   id-token: write
   security-events: write
 
+env:
+  DOCKER_IMAGE_NAME: ${{ github.repository }}
+  
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -46,6 +50,9 @@ jobs:
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v1
+      
+    - name: Build image
+      run: docker build . --file Dockerfile --tag $DOCKER_IMAGE_NAME:latest
 
     - name: Extract metadata for Docker
       id: meta
