@@ -61,6 +61,7 @@ jobs:
       uses: docker/build-push-action@v4
       with:
         context: .
+        file: ./Dockerfile
         push: false  # Não empurra a imagem para o DockerHub
         tags: my-image:${{ steps.meta.outputs.sha }}
 
