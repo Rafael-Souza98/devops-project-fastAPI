@@ -4,7 +4,7 @@ test:
 	@pytest -v --disable-warnings
 
 compose:
-	@docker compose build --no-cache
+	@docker compose build
 	@docker compose up
 
 att-req:
@@ -19,19 +19,15 @@ setup-dev:
 	--selector=app.kubernetes.io/component=controller \
 	--timeout=270s
 
-	@helm upgrade \
+	@helm upgrade mongodb \
 	--install \
 	--set image.tag=5.0.8 \
-	--set auth.rootPassword="root" \
-	mongodb k8s/charts/mongodb
+	--set auth.rootPassword="root" /k8s/helm/mongodb \
+	mongodb k8s/helm/mongodb
 
 	@kubectl wait \
 	--for=condition=ready pod \
 	--selector=app.kubernetes.io/component=mongodb \
 	--timeout=270s
-
-
 destroy-dev:
 	@kind delete clusters kind
-
-helm-setup:
