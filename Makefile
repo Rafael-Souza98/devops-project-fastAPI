@@ -1,4 +1,4 @@
-APP = restapi
+APP = restapi-flask
 
 test:
 	@pytest -v --disable-warnings
@@ -22,8 +22,8 @@ setup-dev:
 	@helm upgrade mongodb \
 	--install \
 	--set image.tag=5.0.8 \
-	--set auth.rootPassword="root" /k8s/helm/mongodb \
-	mongodb k8s/helm/mongodb
+	--set auth.rootPassword="root" k8s/helm/mongodb
+
 
 	@kubectl wait \
 	--for=condition=ready pod \
@@ -31,3 +31,11 @@ setup-dev:
 	--timeout=270s
 destroy-dev:
 	@kind delete clusters kind
+
+deploy-dev:
+	@docker buildx build -t $(APP):latest .
+	@kind load docker-image $(APP):latest
+	@kubectl apply -f k8s/manifests
+	@kubectl rollout restart deploy restapi-flask
+
+dev: setup-dev deploy-dev
