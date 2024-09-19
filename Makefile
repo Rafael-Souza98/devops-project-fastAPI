@@ -31,3 +31,5 @@ setup-dev:
 	--timeout=270s
 destroy-dev:
 	@kind delete clusters kind
+
+dev: setup-dev deploy-dev
