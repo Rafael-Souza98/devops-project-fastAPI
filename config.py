@@ -17,7 +17,7 @@ class ProdConfig():
 
     MONGODB_SETTINGS = {
         'db' : 'users',
-        'host': "mongodb+srv://%s:%s@d%s" % (
+        'host': "mongodb+srv://%s:%s@%s" % (
             MONGODB_USER, MONGODB_PASSWORD, MONGODB_HOST
         )
 
